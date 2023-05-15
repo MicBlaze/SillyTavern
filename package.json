@@ -43,7 +43,7 @@
     "version": "1.5.3",
     "scripts": {
         "start": "node server.js",
-        "pkg": "pkg ."
+        "pkg": "pkg . -C GZip"
     },
     "bin": {
         "sillytavern": "./server.js"
