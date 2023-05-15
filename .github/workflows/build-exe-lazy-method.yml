@@ -1,0 +1,34 @@
+name: Build Executable via pkg Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        arch:
+          - x64
+        node-version:
+          - latest
+        os:
+          - win
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3 # Needed for the repo to be copied to the runner (vm)
+      - name: Install dependencies
+        run: npm install
+      #- name: sanity check dir listing
+      #  run: ls -la
+      #- name: install and run tree
+      #  run: sudo apt-get update && sudo apt-get install tree && tree -L 1000 .
+      - name: Package into node binary
+        uses: lando/pkg-action@v2
+        with:
+          entrypoint: server.js
+          arch: ${{ matrix.arch }}
+          node-version: ${{ matrix.node-version }}
+          os: ${{ matrix.os }}
+          pkg: latest
+          options: -C GZip

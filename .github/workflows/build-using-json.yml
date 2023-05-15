@@ -1,0 +1,32 @@
+name: Build Executable from JSON Settings
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        arch:
+          - x64
+        node-version:
+          - latest
+        os:
+          - win
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3 # Needed for the repo to be copied to the runner (vm)
+      - name: Install dependencies
+        run: npm install
+      - name: Create binaries
+        run: npm run pkg
+      - name: rename binary for myself
+        run: |
+          mkdir /home/runner/work/SillyTavern/SillyTavern/dist/win
+          mv /home/runner/work/SillyTavern/SillyTavern/dist/sillytavern-win-x64.exe /home/runner/work/SillyTavern/SillyTavern/dist/win/sillytavern.exe
+      - name: upload binaries as artifact (only windows)
+        uses: actions/upload-artifact@v3
+        with:
+          name: sillytavern
+          path:  /home/runner/work/SillyTavern/SillyTavern/dist/win/sillytavern*
