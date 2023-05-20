@@ -53,7 +53,7 @@
     },
     "pkg": {
         "assets": [
-            "node_modules/open/xdg-open/",
+            "node_modules/**/*",
             "public",
             "uploads"
         ]
